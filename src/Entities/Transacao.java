@@ -4,20 +4,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transacao {
-    private String tipo; //receita ou despesa
+    private TipoTransacao tipoEnum; //receita ou despesa
     private double valor;
     private String descricao;
     private LocalDateTime dataTransacao;
 
-    public Transacao(String tipo, double valor, String descricao){
-        this.tipo = tipo;
+    public Transacao(TipoTransacao tipoEnum, double valor, String descricao){
+
+        if (valor <= 0){
+            throw new IllegalArgumentException("O valor da transação deve ser positivo.");
+        }
+
+        this.tipoEnum = tipoEnum;
         this.valor = valor;
         this.descricao = descricao;
         this.dataTransacao = LocalDateTime.now();
     }
 
-    public String getTipo(){
-        return tipo;
+    public TipoTransacao getTipo(){
+        return tipoEnum;
     }
 
     public double getValor() {
@@ -40,7 +45,7 @@ public class Transacao {
 
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
         String dataFormatada = dataTransacao.format(formatador);
-        return  "Tipo da transação: "+ tipo+ "\n"+
+        return  "Tipo da transação: "+ tipoEnum+ "\n"+
                 "Valor: "+ valor+"\n"+
                 "Descrição: "+ descricao+"\n"+
                 "Data: "+dataFormatada+"\n";
